@@ -1,12 +1,14 @@
 class SunriseSunsetJob < ApplicationJob
 	queue_as :default
 
-	def perform(lat, long, date=Date.today)
+	def perform(lat, long, date=Date.today.strftime("%Y-%m-%d"))
 
 		if invalid_latitude(lat) 
 			raise "Please pass me a valid latitude" 
 		elsif invalid_longitude(long)
 			raise "Please pass me a valid longitude"
+		elsif invalid_date(date)
+			raise "Please pass me a valid date. Date should be in format YYYY-MM-DD"
 		end
 
 		params = {'lat': lat, 'lng': long, 'date': date}
@@ -30,5 +32,9 @@ class SunriseSunsetJob < ApplicationJob
 
 	def invalid_longitude(long)
 		long < -180 || long > 180
+	end
+
+	def invalid_date(date)
+		date.match(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/).nil?
 	end
 end
