@@ -19,6 +19,6 @@ class SearchController < ApplicationController
 	private
 
 	def search_params
-		params.require(:latitude, :longitude, :date).permit(:formatted)
+		params.require(:latitude, :longitude, :date)
 	end
 end
